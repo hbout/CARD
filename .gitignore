@@ -1,10 +1,12 @@
+.vscode
+
 **/dataset
 **/checkpoints
 **/logs
 **/pic
 **/results
 **/test_results
-
+**/wandb
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
