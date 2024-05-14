@@ -16,7 +16,7 @@ data_dict = {
     'SMD': SMDSegLoader,
     'SWAT': SWATSegLoader,
     'UEA': UEAloader,
-    'SEI': SEIloader
+    'SEI': SEILoader
 }
 
 
