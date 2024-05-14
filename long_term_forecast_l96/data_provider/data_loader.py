@@ -18,7 +18,7 @@ warnings.filterwarnings('ignore')
 class SEIloader(Dataset):
     def __init__(self, root_path, flag='train', size=None,
                  features='M', data_path='Clened_plant1.csv',
-                 target='dc_power', scale=True, timeenc=0, freq='t', seasonal_patterns=None):
+                 target='dc_power', scale=True, timeenc=0, freq='t', seasonal_patterns=None, source_key='1BY6WEcLGh8j5v7'):
         # size [seq_len, label_len, pred_len]
         # info
         if size == None:
@@ -49,8 +49,8 @@ class SEIloader(Dataset):
         df_raw = pd.read_csv(os.path.join(self.root_path,
                                           self.data_path))
 
-        border1s = [0, 12 * 30 * 24 * 4 - self.seq_len, 12 * 30 * 24 * 4 + 4 * 30 * 24 * 4 - self.seq_len]
-        border2s = [12 * 30 * 24 * 4, 12 * 30 * 24 * 4 + 4 * 30 * 24 * 4, 12 * 30 * 24 * 4 + 8 * 30 * 24 * 4]
+        border1s = [0,           20 * 24 * 4 - self.seq_len,    20 * 24 * 4 + 7 * 24 * 4 - self.seq_len]
+        border2s = [20 * 24 * 4, 20 * 24 * 4 + 7 * 24 * 4  ,    20 * 24 * 4 + 14 * 24 * 4]
         border1 = border1s[self.set_type]
         border2 = border2s[self.set_type]
 
