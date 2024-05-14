@@ -42,12 +42,14 @@ class SEIloader(Dataset):
 
         self.root_path = root_path
         self.data_path = data_path
+        self.source_key = source_key
         self.__read_data__()
 
     def __read_data__(self):
         self.scaler = StandardScaler()
         df_raw = pd.read_csv(os.path.join(self.root_path,
                                           self.data_path))
+        df_raw = df_raw[ (self.df['irradiation'] > 0) & (self.df['source_key']==self.source_key)] # remove the times when irradiation = 0  and  select one inverter
 
         border1s = [0,           20 * 24 * 4 - self.seq_len,    20 * 24 * 4 + 7 * 24 * 4 - self.seq_len]
         border2s = [20 * 24 * 4, 20 * 24 * 4 + 7 * 24 * 4  ,    20 * 24 * 4 + 14 * 24 * 4]
