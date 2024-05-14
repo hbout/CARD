@@ -15,17 +15,16 @@ import warnings
 warnings.filterwarnings('ignore')
 
 
-SEILoader
 class SEIloader(Dataset):
     def __init__(self, root_path, flag='train', size=None,
-                 features='S', data_path='Clened_plant1.csv',
+                 features='M', data_path='Clened_plant1.csv',
                  target='dc_power', scale=True, timeenc=0, freq='t', seasonal_patterns=None):
         # size [seq_len, label_len, pred_len]
         # info
         if size == None:
-            self.seq_len = 24 * 4 * 4
-            self.label_len = 24 * 4
-            self.pred_len = 24 * 4
+            self.seq_len = 24 * 4 * 4 # 4 days ?
+            self.label_len = 24 * 4   # 1 days ?
+            self.pred_len = 24 * 4    # 1 days ?
         else:
             self.seq_len = size[0]
             self.label_len = size[1]
@@ -55,10 +54,16 @@ class SEIloader(Dataset):
         border1 = border1s[self.set_type]
         border2 = border2s[self.set_type]
 
-        if self.features == 'M' or self.features == 'MS':
-            cols_data = df_raw.columns[1:]
+        if self.features == '1':
+            cols_data = df_raw.columns['dc_power', 'irradiation'] # 'dc_power', 'ambient_temperature',	'module_temperature','irradiation'
             df_data = df_raw[cols_data]
-        elif self.features == 'S':
+        elif self.features == '2':
+            cols_data = df_raw.columns['dc_power', 'irradiation','module_temperature'] # 'dc_power', 'ambient_temperature',	'module_temperature','irradiation'
+            df_data = df_raw[cols_data]
+                elif self.features == '4':
+            cols_data = df_raw.columns['dc_power', 'irradiation','ambient_temperature'] # 'dc_power', 'ambient_temperature',	'module_temperature','irradiation'
+            df_data = df_raw[cols_data]
+        elif self.features == '3':
             df_data = df_raw[[self.target]]
 
         if self.scale:
@@ -71,9 +76,9 @@ class SEIloader(Dataset):
         df_stamp = df_raw[['date']][border1:border2]
         df_stamp['date'] = pd.to_datetime(df_stamp.date)
         if self.timeenc == 0:
-            df_stamp['month'] = df_stamp.date.apply(lambda row: row.month, 1)
-            df_stamp['day'] = df_stamp.date.apply(lambda row: row.day, 1)
-            df_stamp['weekday'] = df_stamp.date.apply(lambda row: row.weekday(), 1)
+            #df_stamp['month'] = df_stamp.date.apply(lambda row: row.month, 1)
+            #df_stamp['day'] = df_stamp.date.apply(lambda row: row.day, 1)
+            #df_stamp['weekday'] = df_stamp.date.apply(lambda row: row.weekday(), 1)
             df_stamp['hour'] = df_stamp.date.apply(lambda row: row.hour, 1)
             df_stamp['minute'] = df_stamp.date.apply(lambda row: row.minute, 1)
             df_stamp['minute'] = df_stamp.minute.map(lambda x: x // 15)
